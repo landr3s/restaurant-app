@@ -1,0 +1,33 @@
+<!-- src/app/home/home.component.html -->
+<div class="container mx-auto text-center py-20">
+  <h1 class="text-6xl font-bold mb-6 text-purple-800">
+    Bienvenido a Nuestro Restaurante
+  </h1>
+  <p class="text-2xl mb-6 text-gray-700">
+    Revisa nuestro menú, realiza pedidos y califica a nuestros meseros
+  </p>
+  <div class="flex justify-center">
+    <img
+      src="assets/restaurant.jpg"
+      alt="Restaurant Image"
+      class="rounded-lg shadow-lg"
+    />
+  </div>
+  <div class="mt-10">
+    <a
+      routerLink="/menu"
+      class="bg-purple-600 text-white py-2 px-4 rounded-lg mr-4 hover:bg-purple-700"
+      >Ver Menú</a
+    >
+    <a
+      routerLink="/order"
+      class="bg-green-600 text-white py-2 px-4 rounded-lg mr-4 hover:bg-green-700"
+      >Realizar Pedido</a
+    >
+    <a
+      routerLink="/ratings"
+      class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+      >Calificar</a
+    >
+  </div>
+</div>
