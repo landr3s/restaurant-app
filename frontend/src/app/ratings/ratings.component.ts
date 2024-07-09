@@ -1,27 +1,55 @@
-// src/app/ratings/ratings.component.ts
+// src/app/rate/rate.component.ts
 import { Component, OnInit } from '@angular/core';
-import { WaiterRatingService } from './waiter-rating.service';
-import { WaiterRating } from './waiter-rating.model';
+import { RatingService } from '../services/rating.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-ratings',
+  selector: 'app-rate',
   templateUrl: './ratings.component.html',
-  styleUrls: ['./ratings.component.css'],
 })
 export class RatingsComponent implements OnInit {
-  ratings: WaiterRating[] = [];
+  orders: any[] = [];
+  selectedOrder: any;
+  rating: number = 0;
+  comment: string = '';
 
-  constructor(private waiterRatingService: WaiterRatingService) {}
+  constructor(
+    private ratingService: RatingService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.getRatings();
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.ratingService.getUserRatings(userId).subscribe((data: any) => {
+        this.orders = data;
+      });
+    } else {
+      // Manejar el caso cuando userId es null
+      console.error('No userId found in localStorage');
+    }
   }
 
-  getRatings(): void {
-    this.waiterRatingService
-      .getWaiterRatings()
-      .subscribe((data: WaiterRating[]) => {
-        this.ratings = data;
-      });
+  selectOrder(order: any) {
+    this.selectedOrder = order;
+  }
+
+  submitRating() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.ratingService
+        .rateOrder({
+          userId,
+          orderId: this.selectedOrder._id,
+          rating: this.rating,
+          comment: this.comment,
+        })
+        .subscribe((response) => {
+          alert('Rating submitted successfully');
+        });
+    } else {
+      // Manejar el caso cuando userId es null
+      console.error('No userId found in localStorage');
+    }
   }
 }

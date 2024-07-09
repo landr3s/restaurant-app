@@ -1,25 +1,61 @@
 // src/app/order/order.component.ts
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from './order.service';
-import { Order } from './order.model';
+import { ActivatedRoute } from '@angular/router';
+import { RestaurantService } from '../services/restaurant.service';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.css'],
 })
 export class OrderComponent implements OnInit {
-  orders: Order[] = [];
+  restaurantId: string = '';
+  restaurant: any;
+  items: any[] = [];
+  selectedItems: any[] = [];
+  total: number = 0;
 
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private restaurantService: RestaurantService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit(): void {
-    this.getOrders();
+    this.route.queryParams.subscribe((params) => {
+      this.restaurantId = params['restaurantId'];
+      this.loadRestaurant();
+    });
   }
 
-  getOrders(): void {
-    this.orderService.getOrders().subscribe((data: Order[]) => {
-      this.orders = data;
+  loadRestaurant() {
+    this.restaurantService.getAllRestaurants().subscribe((data: any) => {
+      this.restaurant = data.find((res: any) => res._id === this.restaurantId);
+      this.items = this.restaurant.dishes;
     });
+  }
+
+  addToOrder(item: any) {
+    this.selectedItems.push(item);
+    this.total += item.price;
+  }
+
+  placeOrder() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.orderService
+        .createOrder({
+          userId,
+          restaurantId: this.restaurantId,
+          items: this.selectedItems,
+          total: this.total,
+        })
+        .subscribe((response) => {
+          alert('Order placed successfully');
+        });
+    } else {
+      // Manejar el caso cuando userId es null
+      console.error('No userId found in localStorage');
+    }
   }
 }

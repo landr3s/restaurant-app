@@ -6,18 +6,13 @@ import { MenuComponent } from './menu/menu.component';
 import { ContactComponent } from './contact/contact.component';
 import { OrderComponent } from './order/order.component';
 import { RatingsComponent } from './ratings/ratings.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'menu', component: MenuComponent, canActivate: [AuthGuard] },
+  { path: 'menu', component: MenuComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'order', component: OrderComponent, canActivate: [AuthGuard] },
-  { path: 'ratings', component: RatingsComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'order', component: OrderComponent },
+  { path: 'ratings', component: RatingsComponent },
 ];
 
 @NgModule({
