@@ -1,0 +1,9 @@
+<!-- src/app/menu/menu.component.html -->
+<div>
+  <h2>Menu</h2>
+  <ul>
+    <li *ngFor="let menu of menus">
+      {{ menu.name }} - {{ menu.description }} - ${{ menu.price }}
+    </li>
+  </ul>
+</div>

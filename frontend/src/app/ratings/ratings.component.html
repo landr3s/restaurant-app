@@ -1,0 +1,11 @@
+<!-- src/app/ratings/ratings.component.html -->
+<div>
+  <h2>Waiter Ratings</h2>
+  <ul>
+    <li *ngFor="let rating of ratings">
+      {{ rating.waiterName }} - {{ rating.rating }} stars - "{{
+        rating.comment
+      }}"
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,12 @@
+<!-- src/app/order/order.component.html -->
+<div>
+  <h2>Orders</h2>
+  <ul>
+    <li *ngFor="let order of orders">
+      {{ order.customerName }} - ${{ order.totalAmount }}
+      <ul>
+        <li *ngFor="let item of order.items">{{ item.name }}</li>
+      </ul>
+    </li>
+  </ul>
+</div>
