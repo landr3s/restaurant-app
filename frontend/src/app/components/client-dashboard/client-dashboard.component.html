@@ -1,0 +1,13 @@
+<div>
+  <h1>Client Dashboard</h1>
+  <nav>
+    <ul>
+      <li><a routerLink="/home">View Dishes</a></li>
+      <li><a routerLink="/orders">Place Order</a></li>
+      <li><a routerLink="/my-orders">View My Orders</a></li>
+      <li><a routerLink="/rate-waiter">Rate Waiter</a></li>
+      <li><a routerLink="/login" (click)="logout()">Logout</a></li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

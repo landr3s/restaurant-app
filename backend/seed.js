@@ -1,93 +1,40 @@
-// seed.js
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import Dish from "./models/Dish.js";
+import User from "./models/User.js";
+import Waiter from "./models/Waiter.js";
 
-// Conectar a la base de datos
-const mongoUri = "mongodb://localhost:27017/restaurantDB"; // Cambia esto a tu URI de MongoDB
-mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose
+  .connect("mongodb://localhost:27017/restaurant", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(async () => {
+    console.log("MongoDB connected");
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+    await Dish.deleteMany({});
+    await User.deleteMany({});
+    await Waiter.deleteMany({});
 
-// Definir el esquema y modelo para el menú
-const menuSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  price: Number,
-});
+    const dishes = [
+      { name: "Pizza", price: 10, description: "Delicious cheese pizza" },
+      { name: "Pasta", price: 12, description: "Creamy Alfredo pasta" },
+      { name: "Salad", price: 8, description: "Fresh garden salad" },
+    ];
+    await Dish.insertMany(dishes);
 
-const Menu = mongoose.model("Menu", menuSchema);
+    const adminPassword = await bcrypt.hash("adminpassword", 10);
+    const clientPassword = await bcrypt.hash("clientpassword", 10);
+    const users = [
+      { username: "admin", password: adminPassword, role: "admin" },
+      { username: "client", password: clientPassword, role: "client" },
+    ];
+    await User.insertMany(users);
 
-// Definir el esquema y modelo para la orden
-const orderSchema = new mongoose.Schema({
-  customerName: String,
-  items: [menuSchema],
-  totalAmount: Number,
-});
+    const waiters = [{ name: "John Doe" }, { name: "Jane Smith" }];
+    await Waiter.insertMany(waiters);
 
-const Order = mongoose.model("Order", orderSchema);
-
-// Definir el esquema y modelo para la calificación del mesero
-const waiterRatingSchema = new mongoose.Schema({
-  waiterName: String,
-  rating: Number,
-  comment: String,
-});
-
-const WaiterRating = mongoose.model("WaiterRating", waiterRatingSchema);
-
-// Datos de prueba
-const sampleMenus = [
-  {
-    name: "Pizza Margherita",
-    description: "Tomato, mozzarella, and basil",
-    price: 12,
-  },
-  {
-    name: "Spaghetti Carbonara",
-    description: "Pasta with egg, cheese, pancetta, and pepper",
-    price: 15,
-  },
-  {
-    name: "Tiramisu",
-    description: "Coffee-flavored Italian dessert",
-    price: 8,
-  },
-];
-
-const sampleOrders = [
-  {
-    customerName: "John Doe",
-    items: [sampleMenus[0], sampleMenus[2]],
-    totalAmount: 20,
-  },
-  { customerName: "Jane Smith", items: [sampleMenus[1]], totalAmount: 15 },
-];
-
-const sampleRatings = [
-  { waiterName: "Mario Rossi", rating: 5, comment: "Excellent service!" },
-  {
-    waiterName: "Luigi Bianchi",
-    rating: 4,
-    comment: "Very good, but can improve",
-  },
-];
-
-// Insertar los datos de prueba
-const seedDB = async () => {
-  await Menu.deleteMany({});
-  await Order.deleteMany({});
-  await WaiterRating.deleteMany({});
-
-  await Menu.insertMany(sampleMenus);
-  await Order.insertMany(sampleOrders);
-  await WaiterRating.insertMany(sampleRatings);
-
-  console.log("Database seeded!");
-};
-
-seedDB().then(() => {
-  mongoose.connection.close();
-});
+    console.log("Data seeded");
+    mongoose.connection.close();
+  })
+  .catch((err) => console.log(err));

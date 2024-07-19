@@ -1,4 +1,3 @@
-// src/app/services/order.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,15 +6,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class OrderService {
-  private baseUrl = 'http://localhost:3000/api/orders';
+  private apiUrl = 'http://localhost:5000/api/orders'; // URL del backend
 
   constructor(private http: HttpClient) {}
 
-  createOrder(orderData: any): Observable<any> {
-    return this.http.post(this.baseUrl, orderData);
+  getOrders(): Observable<any> {
+    return this.http.get(this.apiUrl);
   }
 
-  getUserOrders(userId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${userId}`);
+  addOrder(order: any): Observable<any> {
+    return this.http.post(this.apiUrl, order);
   }
 }

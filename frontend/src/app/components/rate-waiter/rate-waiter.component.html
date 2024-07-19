@@ -1,0 +1,24 @@
+<div>
+  <h1>Rate Waiter</h1>
+  <form (submit)="onSubmit($event)">
+    <label for="waiter">Select Waiter:</label>
+    <select id="waiter" [(ngModel)]="selectedWaiter" name="waiter" required>
+      <option *ngFor="let waiter of waiters" [value]="waiter._id">
+        {{ waiter.name }}
+      </option>
+    </select>
+
+    <label for="rating">Rating:</label>
+    <input
+      type="number"
+      id="rating"
+      [(ngModel)]="rating"
+      name="rating"
+      required
+      min="1"
+      max="5"
+    />
+
+    <button type="submit">Rate Waiter</button>
+  </form>
+</div>

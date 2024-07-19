@@ -1,0 +1,8 @@
+<div>
+  <h1>My Orders</h1>
+  <ul>
+    <li *ngFor="let order of orders">
+      {{ order.dish.name }} - {{ order.quantity }} - {{ order.totalPrice }}
+    </li>
+  </ul>
+</div>

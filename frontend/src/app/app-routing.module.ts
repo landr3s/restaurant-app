@@ -1,18 +1,26 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { MenuComponent } from './menu/menu.component';
-import { ContactComponent } from './contact/contact.component';
-import { OrderComponent } from './order/order.component';
-import { RatingsComponent } from './ratings/ratings.component';
+import { HomeComponent } from './components/home/home.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { MyOrdersComponent } from './components/my-orders/my-orders.component';
+import { LoginComponent } from './components/login/login.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { ClientDashboardComponent } from './components/client-dashboard/client-dashboard.component';
+import { AddDishComponent } from './components/add-dish/add-dish.component';
+import { AddWaiterComponent } from './components/add-waiter/add-waiter.component';
+import { RateWaiterComponent } from './components/rate-waiter/rate-waiter.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'menu', component: MenuComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: 'order', component: OrderComponent },
-  { path: 'ratings', component: RatingsComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'client-dashboard', component: ClientDashboardComponent },
+  { path: 'add-dish', component: AddDishComponent },
+  { path: 'add-waiter', component: AddWaiterComponent },
+  { path: 'rate-waiter', component: RateWaiterComponent },
+  { path: 'my-orders', component: MyOrdersComponent },
+  { path: 'orders', component: OrdersComponent },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
