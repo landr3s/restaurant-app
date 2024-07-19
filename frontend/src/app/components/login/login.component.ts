@@ -8,30 +8,22 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit(event: Event): void {
-    event.preventDefault();
-    this.authService.login(this.username, this.password).subscribe(
-      (data) => {
-        if (data.role) {
-          localStorage.setItem('token', 'mock-token');
-          localStorage.setItem('userEmail', this.username); // Guardar el email en localStorage
-          if (data.role === 'admin') {
-            this.router.navigate(['/admin-dashboard']);
-          } else {
-            this.router.navigate(['/client-dashboard']);
-          }
-        } else {
-          console.error('Credenciales incorrectas');
-        }
-      },
-      (error) => {
-        console.error('Error logging in', error);
+  onSubmit() {
+    const result = this.authService.login(this.email, this.password);
+    if (result.success) {
+      if (result.role === 'admin') {
+        this.router.navigate(['/admin-dashboard']);
+      } else if (result.role === 'client') {
+        this.router.navigate(['/client-dashboard']);
       }
-    );
+    } else {
+      this.errorMessage = 'Credenciales incorrectas';
+    }
   }
 }

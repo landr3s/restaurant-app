@@ -1,3 +1,5 @@
+// src/app/components/navbar/navbar.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
@@ -7,15 +9,15 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  userRole: string = '';
+  userRole: string | null = null;
 
   constructor(private authService: AuthService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 }

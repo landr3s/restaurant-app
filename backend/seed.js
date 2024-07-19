@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import Dish from "./models/Dish.js";
 import User from "./models/User.js";
 import Waiter from "./models/Waiter.js";
@@ -23,11 +22,9 @@ mongoose
     ];
     await Dish.insertMany(dishes);
 
-    const adminPassword = await bcrypt.hash("adminpassword", 10);
-    const clientPassword = await bcrypt.hash("clientpassword", 10);
     const users = [
-      { username: "admin", password: adminPassword, role: "admin" },
-      { username: "client", password: clientPassword, role: "client" },
+      { email: "admin@gmail.com", password: "admin", role: "admin" },
+      { email: "client@gmail.com", password: "client", role: "client" },
     ];
     await User.insertMany(users);
 
