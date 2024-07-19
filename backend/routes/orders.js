@@ -1,28 +1,27 @@
+// routes/orders.js
 import express from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import Order from "../models/Order.js";
 
 const router = express.Router();
 
-// Register a new user
-router.post("/register", async (req, res) => {
-  const { username, password, role } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ username, password: hashedPassword, role });
-  await newUser.save();
-  res.json(newUser);
+router.post("/", async (req, res) => {
+  try {
+    const { clientEmail, dishes } = req.body;
+    const order = new Order({ clientEmail, dishes });
+    await order.save();
+    res.status(201).send(order);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
-// Login user
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const token = jwt.sign({ id: user._id, role: user.role }, "secretKey");
-    res.json({ token, role: user.role });
-  } else {
-    res.status(401).json({ message: "Invalid credentials" });
+router.get("/client/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const orders = await Order.find({ clientEmail: email }).populate("dishes");
+    res.send(orders);
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 

@@ -1,3 +1,4 @@
+// src/app/components/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -14,16 +15,20 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit() {
-    const result = this.authService.login(this.email, this.password);
-    if (result.success) {
-      if (result.role === 'admin') {
-        this.router.navigate(['/admin-dashboard']);
-      } else if (result.role === 'client') {
-        this.router.navigate(['/client-dashboard']);
+  onSubmit(): void {
+    this.authService.login(this.email, this.password).subscribe(
+      (response) => {
+        this.authService.setUser(this.email, response.role);
+        if (response.role === 'admin') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/client-dashboard']);
+        }
+      },
+      (error) => {
+        this.errorMessage = 'Invalid login credentials';
+        console.error('Error logging in', error);
       }
-    } else {
-      this.errorMessage = 'Credenciales incorrectas';
-    }
+    );
   }
 }

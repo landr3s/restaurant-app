@@ -1,41 +1,35 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private authenticated: boolean = false;
-  private userRole: string | null = null;
+  private apiUrl = 'http://localhost:5000/api/users';
 
-  login(
-    username: string,
-    password: string
-  ): { success: boolean; role: string | null } {
-    if (username === 'admin@gmail.com' && password === 'admin') {
-      this.authenticated = true;
-      this.userRole = 'admin';
-      return { success: true, role: this.userRole };
-    } else if (username === 'client@gmail.com' && password === 'client') {
-      this.authenticated = true;
-      this.userRole = 'client';
-      return { success: true, role: this.userRole };
-    } else {
-      this.authenticated = false;
-      this.userRole = null;
-      return { success: false, role: null };
-    }
+  constructor(private http: HttpClient) {}
+
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
+  }
+
+  setUser(email: string, role: string): void {
+    localStorage.setItem('clientEmail', email);
+    localStorage.setItem('userRole', role);
   }
 
   logout(): void {
-    this.authenticated = false;
-    this.userRole = null;
-  }
-
-  isAuthenticated(): boolean {
-    return this.authenticated;
+    localStorage.removeItem('clientEmail');
+    localStorage.removeItem('userRole');
   }
 
   getUserRole(): string | null {
-    return this.userRole;
+    return localStorage.getItem('userRole');
+  }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('clientEmail');
   }
 }

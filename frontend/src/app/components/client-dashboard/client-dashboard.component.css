@@ -1,0 +1,9 @@
+/* client-dashboard.component.css */
+
+.client-dashboard-container {
+  padding: 20px;
+}
+
+.client-dashboard-container h2 {
+  color: #3498db;
+}

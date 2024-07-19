@@ -1,20 +1,34 @@
+// src/app/services/order.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Order } from '../models/order.model';
+import { Dish } from '../models/dish.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:5000/api/orders'; // URL del backend
+  private apiUrl = 'http://localhost:5000/api/orders';
 
   constructor(private http: HttpClient) {}
 
-  getOrders(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  createOrder(order: {
+    dishes: Dish[];
+    clientEmail: string | null;
+  }): Observable<Order> {
+    return this.http.post<Order>(this.apiUrl, order);
   }
 
-  addOrder(order: any): Observable<any> {
-    return this.http.post(this.apiUrl, order);
+  getClientEmail(): string | null {
+    return localStorage.getItem('clientEmail');
+  }
+
+  getClientOrders(): Observable<Order[]> {
+    const clientEmail = this.getClientEmail();
+    if (!clientEmail) {
+      throw new Error('Client email is not set in localStorage');
+    }
+    return this.http.get<Order[]>(`${this.apiUrl}/client/${clientEmail}`);
   }
 }

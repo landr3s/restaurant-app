@@ -1,0 +1,9 @@
+/* my-orders.component.css */
+
+.my-orders-container {
+  padding: 20px;
+}
+
+.my-orders-container h2 {
+  color: #3498db;
+}

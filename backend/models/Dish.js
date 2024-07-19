@@ -1,9 +1,11 @@
+// models/Dish.js
 import mongoose from "mongoose";
 
 const DishSchema = new mongoose.Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  description: String,
 });
 
-export default mongoose.model("Dish", DishSchema);
+const Dish = mongoose.model("Dish", DishSchema);
+
+export default Dish;

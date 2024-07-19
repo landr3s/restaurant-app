@@ -1,15 +1,14 @@
+// models/Order.js
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
-  items: [
-    {
-      dish: { type: mongoose.Schema.Types.ObjectId, ref: "Dish" },
-      quantity: Number,
-    },
+  clientEmail: { type: String, required: true },
+  dishes: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Dish", required: true },
   ],
-  total: Number,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Order", OrderSchema);
+const Order = mongoose.model("Order", OrderSchema);
+
+export default Order;

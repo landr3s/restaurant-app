@@ -1,0 +1,19 @@
+/* admin-dashboard.component.css */
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-container h2 {
+  color: #3498db;
+}
+
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-actions button {
+  width: auto;
+  margin-right: 10px;
+}

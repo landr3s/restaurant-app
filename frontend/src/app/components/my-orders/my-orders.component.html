@@ -1,8 +1,12 @@
+<!-- src/app/components/my-orders/my-orders.component.html -->
 <div>
   <h1>My Orders</h1>
   <ul>
     <li *ngFor="let order of orders">
-      {{ order.dish.name }} - {{ order.quantity }} - {{ order.totalPrice }}
+      <div *ngFor="let dish of order.dishes">
+        {{ dish.name }} - ${{ dish.price }}
+      </div>
+      <hr />
     </li>
   </ul>
 </div>
